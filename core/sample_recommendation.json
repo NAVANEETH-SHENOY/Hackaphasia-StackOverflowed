@@ -1,0 +1,19 @@
+{
+  "district": "Mandya",
+  "month": 9,
+  "season": "kharif",
+  "recommendations": [],
+  "data_sources": [
+    "Agricultural Research & Extension",
+    "Agmarknet Market Data",
+    "IMD Weather Data",
+    "Government Cost Reports",
+    "AI-Generated Synthetic Data"
+  ],
+  "synthetic_data_used": {
+    "market_prices": "District-wise price variations and seasonal trends",
+    "yield_estimates": "Based on agricultural research and district patterns",
+    "weather_patterns": "District-specific climate variations",
+    "cost_variations": "District-wise cultivation cost estimates"
+  }
+}

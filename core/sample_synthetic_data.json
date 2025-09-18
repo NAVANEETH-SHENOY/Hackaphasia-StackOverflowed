@@ -1,0 +1,69 @@
+{
+  "district": "Mandya",
+  "crop": "Paddy (Rice)",
+  "data_type": "prices",
+  "generated_data": [
+    {
+      "month": 1,
+      "price": 1909.2509556893087,
+      "season": "rabi"
+    },
+    {
+      "month": 2,
+      "price": 1872.6924550764531,
+      "season": "rabi"
+    },
+    {
+      "month": 3,
+      "price": 1936.4393956388358,
+      "season": "rabi"
+    },
+    {
+      "month": 4,
+      "price": 1877.3831484322518,
+      "season": "summer"
+    },
+    {
+      "month": 5,
+      "price": 1703.842561353498,
+      "season": "summer"
+    },
+    {
+      "month": 6,
+      "price": 2216.3214341643084,
+      "season": "kharif"
+    },
+    {
+      "month": 7,
+      "price": 2065.3344867244555,
+      "season": "kharif"
+    },
+    {
+      "month": 8,
+      "price": 2274.699477668566,
+      "season": "kharif"
+    },
+    {
+      "month": 9,
+      "price": 1585.9382940634646,
+      "season": "kharif"
+    },
+    {
+      "month": 10,
+      "price": 1777.341099811368,
+      "season": "kharif"
+    },
+    {
+      "month": 11,
+      "price": 1650.87137040372,
+      "season": "rabi"
+    },
+    {
+      "month": 12,
+      "price": 1936.327878181848,
+      "season": "rabi"
+    }
+  ],
+  "methodology": "Based on seasonal patterns and district variations",
+  "label": "AI-Generated (based on real patterns)"
+}
