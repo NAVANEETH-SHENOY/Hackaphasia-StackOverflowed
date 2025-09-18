@@ -1,0 +1,9 @@
+1. when to sell - 15 day forecast (crop input)
+2. what to grow
+     a. month input
+     b. crop input
+
+DATASETS:
+1. https://agmarknet.gov.in/PriceAndArrivals/DatewiseCommodityReport.aspx?utm_source=chatgpt.com
+2. https://www.kaggle.com/datasets/thammuio/all-agriculture-related-datasets-for-india
+   https://www.kaggle.com/datasets/akshatgupta7/crop-yield-in-indian-states-dataset
