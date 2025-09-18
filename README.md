@@ -1,9 +1,6 @@
 # Hackaphasia-StackOverflowed
 Agritech related problem statement for Hackaphasia BMSCE
 
-# Hackaphasia-StackOverflowed
-Agritech related problem statement for Hackaphasia BMSCE
-
 # 🌾 AgriTech ML Project - Smart Farming Solutions
 
 **Empowering Farmers with AI-Driven Crop Price Forecasts and Intelligent Recommendations**
