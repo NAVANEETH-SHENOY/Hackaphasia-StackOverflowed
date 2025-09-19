@@ -1,0 +1,42 @@
+# AgriTech Backend Dependencies - Updated for Python 3.13
+# Core Flask and web framework
+Flask>=2.3.0
+Flask-CORS>=4.0.0
+
+# Machine Learning libraries
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+xgboost>=1.7.0
+joblib>=1.3.0
+prophet>=1.1.0
+
+# NLP and Translation
+googletrans==3.1.0a0  # Use specific alpha version that works with Python 3.x
+httpx>=0.13.3  # Required by googletrans
+indicnlp>=0.1.0
+indic-nlp-library>=0.1
+indic-transliteration>=2.3.0
+
+# Weather and API integrations
+openweathermap>=0.1.0
+agmarknet-api>=0.1.0
+
+# Data processing and utilities
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-flask>=1.2.0
+
+# Production server
+gunicorn>=21.2.0
+
+# Build tools for Python 3.13 compatibility
+setuptools>=68.0.0
+wheel>=0.40.0
+
+# Optional: For enhanced logging and monitoring
+# prometheus-flask-exporter>=0.23.0
+# flask-limiter>=3.3.1

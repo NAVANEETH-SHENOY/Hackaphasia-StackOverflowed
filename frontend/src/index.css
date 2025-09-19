@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-primary-50 to-secondary-50 text-gray-900;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-sm border border-gray-100 shadow-card hover:shadow-card-hover transition-shadow duration-300 rounded-xl overflow-hidden;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-5 rounded-lg transition-all duration-200 transform hover:translate-y-[-1px] hover:shadow-glow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:translate-y-[1px];
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center bg-secondary-500 hover:bg-secondary-600 text-white font-semibold py-2.5 px-5 rounded-lg transition-all duration-200 transform hover:translate-y-[-1px] hover:shadow-glow-md focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 active:translate-y-[1px];
+  }
+  
+  .metric-card {
+    @apply glass-card p-6 rounded-xl text-center hover:shadow-glow-md transition-all duration-300 animate-fade-in;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 focus:bg-white;
+  }
+  
+  .select-field {
+    @apply w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 focus:bg-white;
+  }
+
+  .card-hover-effect {
+    @apply transition-all duration-300 transform hover:scale-[1.02] hover:shadow-glow-md;
+  }
+
+  .shimmer {
+    @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent;
+  }
+
+  .loading-dots {
+    @apply inline-flex space-x-1;
+  }
+  
+  .loading-dots > div {
+    @apply w-1.5 h-1.5 bg-current rounded-full animate-bounce-gentle;
+  }
+  
+  .loading-dots > div:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .loading-dots > div:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .progress-bar {
+    @apply relative h-2 w-full bg-gray-100 rounded-full overflow-hidden;
+  }
+  
+  .progress-bar-fill {
+    @apply absolute h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-500 ease-out;
+  }
+
+  .tag {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors;
+  }
+  
+  .tag-success {
+    @apply bg-success-50 text-success-600;
+  }
+  
+  .tag-warning {
+    @apply bg-warning-50 text-warning-600;
+  }
+  
+  .tag-error {
+    @apply bg-error-50 text-error-600;
+  }
+}

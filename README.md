@@ -1,15 +1,104 @@
-# Hackaphasia-StackOverflowed
-Agritech related problem statement for Hackaphasia BMSCE
-
-# 🌾 AgriTech ML Project - Smart Farming Solutions
+# 🌾 AgriTech - Smart Farming Solutions
 
 **Empowering Farmers with AI-Driven Crop Price Forecasts and Intelligent Recommendations**
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![XGBoost](https://img.shields.io/badge/XGBoost-1.7%2B-green.svg)](https://xgboost.ai/)
 [![Flask](https://img.shields.io/badge/Flask-2.3%2B-red.svg)](https://flask.palletsprojects.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-orange.svg)](https://streamlit.io/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## 📋 Project Overview
+
+AgriTech is a comprehensive AI-powered platform designed to help Indian farmers make informed decisions about crop pricing and cultivation strategies. The system provides 15-day price forecasting and intelligent crop recommendations based on location, season, and market conditions.
+
+## 🚀 Features
+
+### 🌾 Price Forecasting
+- **AI-Powered Predictions**: 15-day price forecasts using XGBoost models
+- **Interactive Charts**: Visual price trends and volatility analysis
+- **Smart Recommendations**: Buy/sell timing suggestions
+- **Multiple Crops**: Support for 10+ major Indian crops
+
+### 🌱 Crop Recommendations
+- **Location-Based**: Recommendations based on state and district
+- **Seasonal Analysis**: Optimal planting times and crop selection
+- **Suitability Scoring**: AI-driven crop suitability assessment
+- **Market Insights**: Demand and competition analysis
+
+### 📊 Market Analytics
+- **Trend Analysis**: Historical price patterns and market trends
+- **Crop Distribution**: Area-wise crop cultivation insights
+- **Market Alerts**: Real-time market updates and warnings
+
+## 🏗️ Project Structure
+
+```
+final/
+├── backend/                 # Complete Flask Backend
+│   ├── app.py              # Main Flask application
+│   ├── requirements.txt    # Backend dependencies
+│   ├── README.md          # Backend documentation
+│   ├── *.pkl              # ML model files
+│   └── *.png              # Generated images
+├── frontend/               # React Web Interface
+│   ├── src/               # React source code
+│   ├── dist/              # Built React app
+│   ├── package.json       # Node.js dependencies
+│   └── README.md         # Frontend documentation
+├── model_pipline/         # ML Training Pipeline
+│   └── pipeline.py       # Model training and evaluation
+└── README.md             # This file
+```
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Flask**: RESTful API framework
+- **XGBoost**: Machine learning models
+- **Pandas/NumPy**: Data processing
+- **Joblib**: Model serialization
+
+### Frontend
+- **React**: Modern web interface
+- **Vite**: Fast build tool
+- **Tailwind CSS**: Utility-first CSS framework
+- **Axios**: HTTP client for API calls
+
+### Machine Learning
+- **XGBoost**: Gradient boosting for predictions
+- **Scikit-learn**: Data preprocessing and evaluation
+- **Pandas**: Data manipulation and analysis
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd final
+```
+
+### 2. Start the Backend
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+The API will be available at `http://localhost:5000`
+
+### 3. Start the Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The web interface will be available at `http://localhost:5173`
+
+### 4. Access the Application
+Open your browser and navigate to `http://localhost:5173`
 
 ## 📋 Table of Contents
 
