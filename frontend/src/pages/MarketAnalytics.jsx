@@ -26,6 +26,7 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts'
+import PageTransition from '../components/PageTransition'
 
 const MarketAnalytics = () => {
   const [timeRange, setTimeRange] = useState('6months')
@@ -113,8 +114,9 @@ const MarketAnalytics = () => {
   ]
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <PageTransition>
+      <div className="space-y-8">
+        {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -414,7 +416,8 @@ const MarketAnalytics = () => {
           </div>
         </Card>
       </motion.div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }
 

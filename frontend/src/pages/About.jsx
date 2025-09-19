@@ -15,6 +15,7 @@ import {
   CheckCircle
 } from 'lucide-react'
 import Card from '../components/Card'
+import PageTransition from '../components/PageTransition'
 
 const About = () => {
   const features = [
@@ -59,8 +60,9 @@ const About = () => {
   ]
 
   return (
-    <div className="space-y-8">
-      {/* Hero Section */}
+    <PageTransition>
+      <div className="space-y-8">
+        {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -355,7 +357,8 @@ const About = () => {
           <span>for Indian Farmers</span>
         </div>
       </motion.div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }
 

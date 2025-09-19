@@ -15,6 +15,7 @@ import MetricCard from '../components/MetricCard'
 import Button from '../components/Button'
 import { agriTechAPI } from '../services/api'
 import toast from 'react-hot-toast'
+import PageTransition from '../components/PageTransition'
 
 const Dashboard = () => {
   const [apiStatus, setApiStatus] = useState('checking')
@@ -65,8 +66,9 @@ const Dashboard = () => {
   ]
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <PageTransition>
+      <div className="space-y-8">
+        {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -228,7 +230,8 @@ const Dashboard = () => {
           </div>
         </Card>
       </motion.div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }
 

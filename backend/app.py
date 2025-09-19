@@ -496,6 +496,7 @@ def recommend_crop():
         "district": "Pune" // Optional
     }
     """
+    logger.info("Received recommend-crop request")
     try:
         data = request.get_json()
         
@@ -503,31 +504,113 @@ def recommend_crop():
             return jsonify({'error': 'No JSON data provided'}), 400
         
         # Get parameters with defaults
-        state = data.get('state', '').strip()
+        mode = 'location_based'  # Default mode
+        state = data.get('state', '')
+        state = state.strip() if state else ''
+        crop = data.get('crop', '').strip() if data.get('crop') else ''
+        
+        if crop:
+            mode = 'crop_analysis'  # Switch to crop analysis mode if crop is provided
+            if not crop:
+                return jsonify({'error': 'Crop name is required for crop analysis mode'}), 400
+        else:
+            # Location-based mode validation
+            if not state:
+                return jsonify({'error': 'State is required for location-based mode'}), 400
+            
         month = data.get('month', datetime.now().month)
-        district = data.get('district', '').strip()
-        
-        if not state:
-            return jsonify({'error': 'State is required'}), 400
-        
         if month is not None and (not isinstance(month, int) or month < 1 or month > 12):
             return jsonify({'error': 'Month must be between 1 and 12'}), 400
+            
+        district = data.get('district')
+        district = district.strip() if district else ''
         
-        # Get recommendations
-        recommendations = agritech_api.recommend_crops(state, month, district)
+        logger.info(f"Mode: {mode}, State: {state}, Crop: {crop}, Month: {month}, District: {district}")
         
-        if not recommendations:
-            return jsonify({'error': 'Failed to generate recommendations'}), 500
-        
-        response = {
-            'state': state,
-            'month': month,
-            'month_name': calendar.month_name[month],
-            'district': district if district else 'General',
-            'recommendations': recommendations,
-            'season': _get_season_name(month),
-            'generated_at': datetime.now().isoformat()
-        }
+        try:
+            response = {}
+            if mode == 'location_based':
+                # Get location-based recommendations
+                logger.info(f"Getting location-based recommendations for state: {state}, month: {month}, district: {district}")
+                recommendations = agritech_api.recommend_crops(state, month, district)
+                
+                if not recommendations:
+                    logger.error("Failed to generate location-based recommendations")
+                    return jsonify({'error': 'Failed to generate recommendations'}), 500
+                
+                response = {
+                    'mode': 'location_based',
+                    'state': state,
+                    'month': month,
+                    'month_name': calendar.month_name[month],
+                    'district': district if district else 'General',
+                    'recommendations': recommendations,
+                    'season': _get_season_name(month),
+                    'generated_at': datetime.now().isoformat()
+                }
+            else:
+                # Get crop analysis
+                logger.info(f"Getting crop analysis for crop: {crop}, state: {state}")
+                crop_data = agritech_api.recommend_crops(state, month, district)
+                
+                # Find the specific crop data
+                crop_recommendation = next((rec for rec in crop_data if rec['crop'] == crop), None)
+                if not crop_recommendation:
+                    logger.error(f"Failed to find analysis for crop: {crop}")
+                    return jsonify({'error': f'Failed to analyze crop: {crop}'}), 500
+                
+                # Get market analysis with enhanced analysis
+                try:
+                    market_analysis = market_service.get_market_analysis(crop, state)
+                    market_outlook = {
+                        'demand': market_analysis['demand'],
+                        'price_stability': market_analysis['price_stability'],
+                        'competition': market_analysis['competition'],
+                        'trend': market_analysis['trend'],
+                        'seasonal_timing': market_analysis['seasonal_timing'],
+                        'market_volatility': market_analysis['market_volatility'],
+                        'regional_strength': market_analysis['regional_strength'],
+                        'confidence_score': market_analysis['confidence_score'],
+                        'price_range': market_analysis['price_range'],
+                        'future_outlook': market_analysis['future_outlook'],
+                        'last_updated': market_analysis['analysis_timestamp']
+                    }
+                    logger.info(f"Generated dynamic market analysis for {crop} in {state if state else 'General'}")
+                except Exception as e:
+                    logger.error(f"Error getting market analysis: {e}")
+                    market_outlook = {
+                        'demand': 'moderate',
+                        'price_stability': 'stable',
+                        'competition': 'moderate',
+                        'trend': 'stable',
+                        'seasonal_timing': 'normal',
+                        'market_volatility': 0,
+                        'regional_strength': 0,
+                        'confidence_score': 50,
+                        'price_range': {'min': 0, 'max': 0, 'avg': 0},
+                        'future_outlook': 'neutral',
+                        'last_updated': datetime.now().isoformat()
+                    }
+                
+                response = {
+                    'mode': 'crop_analysis',
+                    'crop': crop,
+                    'state': state if state else 'General',
+                    'analysis': {
+                        'suitability_score': crop_recommendation['suitability_score'],
+                        'estimated_yield': crop_recommendation['estimated_yield'],
+                        'recommendation_reason': crop_recommendation['recommendation_reason']
+                    },
+                    'market_outlook': market_outlook,
+                    'generated_at': datetime.now().isoformat()
+                }
+            
+            logger.info(f"Generated response successfully: {response}")
+            return jsonify(response)
+            
+        except Exception as e:
+            logger.error(f"Error generating response: {e}")
+            return jsonify({'error': str(e)}), 500
         
         return jsonify(response)
         

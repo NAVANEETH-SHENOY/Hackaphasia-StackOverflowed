@@ -13,6 +13,7 @@ import Select from '../components/Select'
 import { agriTechAPI } from '../services/api'
 import toast from 'react-hot-toast'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import PageTransition from '../components/PageTransition'
 
 const PriceForecast = () => {
   const [formData, setFormData] = useState({
@@ -60,8 +61,9 @@ const PriceForecast = () => {
 
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <PageTransition>
+      <div className="space-y-8">
+        {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -263,7 +265,8 @@ const PriceForecast = () => {
           )}
         </motion.div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }
 

@@ -17,6 +17,7 @@ import Select from '../components/Select'
 import { agriTechAPI } from '../services/api'
 import toast from 'react-hot-toast'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import PageTransition from '../components/PageTransition'
 
 const CropRecommendations = () => {
   const [mode, setMode] = useState('location') // 'location' or 'crop'
@@ -115,8 +116,9 @@ const CropRecommendations = () => {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <PageTransition>
+      <div className="space-y-8">
+        {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -436,22 +438,91 @@ const CropRecommendations = () => {
                         <h4 className="font-semibold text-gray-900 mb-2">Market Outlook</h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="p-3 bg-gray-50 rounded-lg">
-                            <div className="text-sm text-gray-600">Demand</div>
-                            <div className="font-semibold capitalize">
-                              {recommendations.market_outlook.demand}
+                            <div className="text-sm text-gray-600">Market Demand</div>
+                            <div className={`font-semibold capitalize ${
+                              recommendations.market_outlook.demand === 'high' ? 'text-green-600' :
+                              recommendations.market_outlook.demand === 'very_high' ? 'text-green-700' :
+                              recommendations.market_outlook.demand === 'low' ? 'text-red-600' :
+                              'text-yellow-600'
+                            }`}>
+                              {recommendations.market_outlook.demand.replace('_', ' ')}
                             </div>
                           </div>
                           <div className="p-3 bg-gray-50 rounded-lg">
-                            <div className="text-sm text-gray-600">Price Stability</div>
-                            <div className="font-semibold capitalize">
-                              {recommendations.market_outlook.price_stability}
+                            <div className="text-sm text-gray-600">Price Trend</div>
+                            <div className={`font-semibold capitalize ${
+                              recommendations.market_outlook.trend === 'increasing' ? 'text-green-600' :
+                              recommendations.market_outlook.trend === 'decreasing' ? 'text-red-600' :
+                              'text-yellow-600'
+                            }`}>
+                              {recommendations.market_outlook.trend}
                             </div>
                           </div>
                           <div className="p-3 bg-gray-50 rounded-lg">
                             <div className="text-sm text-gray-600">Competition</div>
-                            <div className="font-semibold capitalize">
+                            <div className={`font-semibold capitalize ${
+                              recommendations.market_outlook.competition === 'low' ? 'text-green-600' :
+                              recommendations.market_outlook.competition === 'high' ? 'text-red-600' :
+                              'text-yellow-600'
+                            }`}>
                               {recommendations.market_outlook.competition}
                             </div>
+                          </div>
+                          <div className="p-3 bg-gray-50 rounded-lg">
+                            <div className="text-sm text-gray-600">Price Range</div>
+                            <div className="space-y-1">
+                              <div className="text-xs text-gray-500">Average: ₹{recommendations.market_outlook.price_range.avg}</div>
+                              <div className="text-xs text-gray-500">
+                                Range: ₹{recommendations.market_outlook.price_range.min} - ₹{recommendations.market_outlook.price_range.max}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="p-3 bg-gray-50 rounded-lg">
+                            <div className="text-sm text-gray-600">Market Outlook</div>
+                            <div className={`font-semibold capitalize ${
+                              recommendations.market_outlook.future_outlook === 'positive' ? 'text-green-600' :
+                              recommendations.market_outlook.future_outlook === 'negative' ? 'text-red-600' :
+                              'text-yellow-600'
+                            }`}>
+                              {recommendations.market_outlook.future_outlook}
+                            </div>
+                          </div>
+                          <div className="p-3 bg-gray-50 rounded-lg">
+                            <div className="text-sm text-gray-600">Analysis Confidence</div>
+                            <div className={`font-semibold ${
+                              recommendations.market_outlook.confidence_score >= 80 ? 'text-green-600' :
+                              recommendations.market_outlook.confidence_score >= 60 ? 'text-yellow-600' :
+                              'text-red-600'
+                            }`}>
+                              {recommendations.market_outlook.confidence_score}%
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="mt-4 space-y-2">
+                          {recommendations.market_outlook.market_volatility > 0 && (
+                            <div className="p-3 bg-blue-50 rounded-lg">
+                              <p className="text-sm text-blue-800">
+                                <strong>Market Volatility:</strong> {' '}
+                                {recommendations.market_outlook.market_volatility > 100 ? 'High' : 
+                                recommendations.market_outlook.market_volatility > 50 ? 'Moderate' : 'Low'} 
+                                {' '}(±₹{Math.round(recommendations.market_outlook.market_volatility)} per quintal)
+                              </p>
+                            </div>
+                          )}
+                          
+                          {recommendations.market_outlook.regional_strength > 0 && (
+                            <div className="p-3 bg-green-50 rounded-lg">
+                              <p className="text-sm text-green-800">
+                                <strong>Regional Market Advantage:</strong> This region shows a 
+                                {' '}{recommendations.market_outlook.regional_strength}% higher market strength 
+                                for {recommendations.crop}.
+                              </p>
+                            </div>
+                          )}
+                          
+                          <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-500">
+                            Last updated: {new Date(recommendations.market_outlook.last_updated).toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -473,7 +544,8 @@ const CropRecommendations = () => {
           )}
         </motion.div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }
 
