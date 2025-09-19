@@ -9,12 +9,12 @@
 
 ## 📋 Project Overview
 
-AgriTech is a comprehensive AI-powered platform designed to help Indian farmers make informed decisions about crop pricing and cultivation strategies. The system provides 15-day price forecasting and intelligent crop recommendations based on location, season, and market conditions.
+AgriTech is a comprehensive AI-powered platform designed to help Indian farmers make informed decisions about crop pricing and cultivation strategies. The system provides upto 30-day price forecasting and intelligent crop recommendations based on location, season, and market conditions.
 
 ## 🚀 Features
 
 ### 🌾 Price Forecasting
-- **AI-Powered Predictions**: 15-day price forecasts using XGBoost models
+- **AI-Powered Predictions**: upto 30-day price forecasts using XGBoost model
 - **Interactive Charts**: Visual price trends and volatility analysis
 - **Smart Recommendations**: Buy/sell timing suggestions
 - **Multiple Crops**: Support for 10+ major Indian crops
@@ -135,7 +135,7 @@ Agriculture contributes ~18% to India's GDP and employs ~50% of the workforce. H
 ### Goals
 
 1. **Primary Goals:**
-   - Develop accurate 15-day price forecasting models (MAPE < 15%)
+   - Develop accurate upto 30-day price forecasting models (MAPE < 15%)
    - Create reliable crop recommendation system (Accuracy > 80%)
    - Build intuitive web interface for farmers
 
@@ -314,12 +314,6 @@ params = {
 | **Overall Accuracy** | 83.2% | Correct recommendations |
 | **Precision (Macro)** | 0.821 | Quality of positive predictions |
 | **Recall (Macro)** | 0.798 | Coverage of actual positives |
-| **F1-Score (Macro)** | 0.809 | Balanced precision-recall |
-
-**Confusion Matrix Insights:**
-- High accuracy for major crops (Rice, Wheat: >90%)
-- Moderate performance for niche crops due to limited data
-- Strong regional specialization detection
 
 ### Feature Importance Analysis
 
@@ -343,11 +337,6 @@ params = {
 - Walk-forward validation for price forecasting
 - Out-of-time testing on recent 6 months of data
 - Seasonal robustness testing across different crop cycles
-
-**Cross-Validation Results:**
-- 5-fold CV average MAPE: 13.1% (±1.2%)
-- Consistent performance across different crops
-- Stable predictions across various market conditions
 
 ## 🌐 APIs
 
@@ -382,6 +371,8 @@ params = {
 - **Caching Strategy:** 4-hour cache for weather data
 - **Error Handling:** Graceful fallback to historical averages
 - **Retry Logic:** Exponential backoff for failed requests
+
+Note: The APIs are for further scaling
 
 ## 🖥️ Backend
 
@@ -590,13 +581,6 @@ if 'user_preferences' not in st.session_state:
 - Live weather integration
 - Dynamic chart updates without page reload
 
-**Caching Strategy:**
-```python
-@st.cache_data(ttl=1800)  # 30-minute cache
-def fetch_price_forecast(crop, days):
-    return make_api_call('/forecast-price', {'crop': crop, 'days': days})
-```
-
 #### Running the Frontend
 
 ```bash
@@ -721,67 +705,6 @@ black==23.7.0
 flake8==6.0.0
 ```
 
-### Docker Deployment (Production)
-
-#### Dockerfile
-```dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY . .
-
-# Expose ports
-EXPOSE 5000 8501
-
-# Start script
-CMD ["bash", "start_services.sh"]
-```
-
-#### docker-compose.yml
-```yaml
-version: '3.8'
-
-services:
-  backend:
-    build: .
-    ports:
-      - "5000:5000"
-    environment:
-      - FLASK_ENV=production
-    volumes:
-      - ./models:/app/models
-    command: gunicorn --bind 0.0.0.0:5000 flask_backend:app
-
-  frontend:
-    build: .
-    ports:
-      - "8501:8501"
-    depends_on:
-      - backend
-    command: streamlit run streamlit_frontend.py --server.port 8501
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - backend
-      - frontend
-```
-
 ## 💡 Usage
 
 ### Basic Usage Examples
@@ -835,63 +758,6 @@ forecast_data = response.json()
 response = requests.post('http://localhost:5000/recommend-crop',
                         json={'state': 'Punjab', 'month': 11})
 recommendations = response.json()
-```
-
-### Advanced Features
-
-#### 1. Batch Processing
-```python
-# Process multiple crops at once
-crops = ['Rice', 'Wheat', 'Maize', 'Cotton']
-forecasts = {}
-
-for crop in crops:
-    forecasts[crop] = model.predict_price(crop, days=15)
-
-# Save results to CSV
-pd.DataFrame(forecasts).to_csv('batch_forecasts.csv')
-```
-
-#### 2. Custom Model Training
-```python
-# Train model with your own data
-from agritech_training import ModelTrainer
-
-trainer = ModelTrainer()
-trainer.load_data('your_price_data.csv')
-trainer.preprocess_data()
-trainer.train_model(
-    model_type='xgboost',
-    hyperparameters={
-        'n_estimators': 1000,
-        'max_depth': 6,
-        'learning_rate': 0.1
-    }
-)
-trainer.save_model('custom_model.pkl')
-```
-
-#### 3. Integration with External Systems
-```python
-# Example: ERP integration
-class ERPIntegration:
-    def __init__(self, erp_api_key):
-        self.api_key = erp_api_key
-        self.agritech_api = AgriTechAPI()
-    
-    def sync_crop_data(self):
-        # Fetch crop data from ERP
-        crop_data = self.fetch_from_erp()
-        
-        # Get AI recommendations
-        for crop_info in crop_data:
-            recommendations = self.agritech_api.recommend_crops(
-                state=crop_info['location'],
-                month=crop_info['planting_month']
-            )
-            
-            # Send back to ERP
-            self.send_to_erp(crop_info['id'], recommendations)
 ```
 
 ## 🔮 Future Work
@@ -975,14 +841,6 @@ graph TD
 
 ## 🤝 Contributing
 
-### Development Guidelines
-
-#### Code Style
-- **Python:** Follow PEP 8 guidelines
-- **Documentation:** Comprehensive docstrings for all functions
-- **Testing:** Minimum 80% code coverage
-- **Version Control:** Git flow with feature branches
-
 #### Pull Request Process
 1. Fork the repository
 2. Create feature branch: `git checkout -b feature/amazing-feature`
@@ -1001,19 +859,6 @@ pytest --cov=agritech tests/
 # Run specific test categories
 pytest tests/test_models.py::TestPriceForecasting
 ```
-
-### Community Support
-
-#### Communication Channels
-- **GitHub Issues:** Bug reports and feature requests
-- **Discord Server:** Real-time community discussions
-- **Email:** technical-support@agritech-ml.com
-
-#### Documentation Contributions
-- **Wiki Updates:** Keep documentation current with code changes
-- **Tutorial Creation:** Help new users get started
-- **Translation:** Contribute to regional language support
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -1033,15 +878,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact & Support
 
 ### Development Team
-- **Lead Developer:** Your Name (your.email@example.com)
-- **ML Engineer:** Team Member 2 (ml.engineer@example.com)
-- **Frontend Developer:** Team Member 3 (frontend.dev@example.com)
-
-### Support Resources
-- **Documentation:** [GitHub Wiki](https://github.com/yourusername/agritech-ml/wiki)
-- **Video Tutorials:** [YouTube Playlist](https://youtube.com/playlist)
-- **Community Forum:** [Discord Server](https://discord.gg/agritech-ml)
-- **Issue Tracker:** [GitHub Issues](https://github.com/yourusername/agritech-ml/issues)
+- **Team Lead:** R Navaneeth Shenoy
+- **Team Members:**
+   - Sinchana V
+   - Sanket Nagathan
 
 ### Acknowledgments
 - Ministry of Agriculture & Farmers Welfare for data access
